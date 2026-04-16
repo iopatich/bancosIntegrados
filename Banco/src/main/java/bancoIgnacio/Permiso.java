@@ -1,3 +1,5 @@
+package bancoIgnacio;
+
 public enum Permiso {
     VER_SUCURSALES,
     CREAR_CLIENTE,

@@ -1,6 +1,10 @@
-import java.util.ArrayList;
+package bancoIgnacio;
 
-public class Banco {
+import java.util.ArrayList;
+import interfazComun.BancoConectable;
+import interfazComun.MediadorTransferencia;
+
+public class Banco implements BancoConectable{
     private ArrayList<Sucursal> sucursales = new ArrayList<>();
     private AdminBanco adminBanco;
 
@@ -16,11 +20,11 @@ public class Banco {
         double total = 0;
 
         for (Sucursal sucursal : sucursales) {
-            System.out.println("Sucursal: " + sucursal.getNombre());
+            System.out.println("bancoIgnacio.Sucursal: " + sucursal.getNombre());
 
             for (Cliente cliente : sucursal.getClientes()) {
                 for (Cuenta cuenta : cliente.getCuentas()) {
-                    System.out.println("Cuenta: " + cuenta.getIdCuenta() + "  Saldo: $" + cuenta.getSaldo());
+                    System.out.println("bancoIgnacio.Cuenta: " + cuenta.getIdCuenta() + "  Saldo: $" + cuenta.getSaldo());
                     total += cuenta.getSaldo();
                 }
             }
@@ -45,5 +49,26 @@ public class Banco {
             }
         }
         return null;
+    }
+
+    @Override
+    public boolean transferirDestino(int numeroCuenta, double monto) {
+        for (Sucursal sucursal : sucursales) {
+            for (Cliente cliente : sucursal.getClientes()) {
+                for (Cuenta cuenta : cliente.getCuentas()) {
+                    if (cuenta.getIdCuenta() == numeroCuenta) {
+                        cuenta.depositar(monto);
+                        System.out.println("Transferencia recibida en banco Ignacio");
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public String getNombreBanco() {
+        return "Banco Ignacio";
     }
 }

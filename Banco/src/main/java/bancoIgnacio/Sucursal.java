@@ -1,3 +1,7 @@
+package bancoIgnacio;
+
+import interfazComun.MediadorTransferencia;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,7 +88,7 @@ public class Sucursal {
             return;
         }
         for (Cuenta cuenta : cuentas) {
-            System.out.println("Cuenta: " + cuenta.getIdCuenta() + "\n Saldo: $" + cuenta.getSaldo());
+            System.out.println("bancoIgnacio.Cuenta: " + cuenta.getIdCuenta() + "\n Saldo: $" + cuenta.getSaldo());
 
         }
     }
@@ -139,6 +143,28 @@ public class Sucursal {
         if (cuenta != null && cuenta.getSaldo() >= monto) {
             cuenta.retirar(monto);
             System.out.println("Retiro realizado");
+        }
+    }
+
+    public void transferirOtroBanco(Admin admin, int idCuentaOrigen, int cuentaDestino, double monto, MediadorTransferencia mediador, Banco bancoOrigen) {
+        if (!admin.tienePermiso(Permiso.TRANSFERIR_PROPIO)) {
+            System.out.println("Sin permiso");
+            return;
+        }
+
+        Cuenta origen = buscarCuenta(idCuentaOrigen);
+
+        if (origen != null && origen.getSaldo() >= monto) {
+            origen.retirar(monto);
+
+            boolean ok = mediador.transferirEntreBancos(bancoOrigen, cuentaDestino, monto);
+
+            if (ok) {
+                System.out.println("Transferencia interbancaria realizada");
+            } else {
+                origen.depositar(monto);
+                System.out.println("Cuenta destino no encontrada");
+            }
         }
     }
 }

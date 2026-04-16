@@ -1,4 +1,4 @@
-import java.time.LocalDateTime;
+package bancoIgnacio;
 
 public class Transaccion {
     private String tipo; // DEPOSITO, RETIRO, TRANSFERENCIA

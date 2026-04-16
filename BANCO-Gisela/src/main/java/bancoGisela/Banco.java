@@ -3,11 +3,15 @@ package bancoGisela;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Banco {
+import interfazComun.BancoConectable;
+import interfazComun.MediadorTransferencia;
+
+public class Banco implements BancoConectable{
+    static ArrayList<Sucursal> listSucursales = new ArrayList<>();
+
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
-        ArrayList<Sucursal> listSucursales = new ArrayList<>();
 
         // Credenciales Super Admin (Dueño del Banco)
         String superUser = "admin";
@@ -225,5 +229,25 @@ public class Banco {
             }
         }
         System.out.println("CAPITAL TOTAL DEL BANCO: $" + totalGlobal);
+    }
+
+
+    @Override
+    public boolean transferirDestino(int numeroCuenta, double monto) {
+        for (Sucursal sucursal : listSucursales) {
+            for (Cuenta cuenta : sucursal.listaCuentas) {
+                if (cuenta.numeroDeCuenta == numeroCuenta) {
+                    cuenta.saldo += monto;
+                    System.out.println("Transferencia recibida en banco Gisela");
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public String getNombreBanco() {
+        return "Banco Gisela";
     }
 }

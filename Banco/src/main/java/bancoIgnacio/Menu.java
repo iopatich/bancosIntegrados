@@ -1,3 +1,5 @@
+package bancoIgnacio;
+
 import java.util.Scanner;
 
 public class Menu {
@@ -53,7 +55,7 @@ public class Menu {
         int opcion;
 
         do {
-            System.out.println("Menu Admin Banco");
+            System.out.println("bancoIgnacio.Menu bancoIgnacio.Admin bancoIgnacio.Banco");
             System.out.println("1: Ver balance total de las cuentas");
             System.out.println("0: Cerrar sesion");
             System.out.println("-1: Salir del sistema");
@@ -80,7 +82,7 @@ public class Menu {
         int opcion;
 
         do {
-            System.out.println("Menu\nSucursal: " + sucursal.getNombre());
+            System.out.println("bancoIgnacio.Menu\nSucursal: " + sucursal.getNombre());
             System.out.println("1: Crear cliente");
             System.out.println("2: Crear cuenta");
             System.out.println("3: Depositar");
@@ -151,7 +153,7 @@ public class Menu {
         }
 
         if (cliente == null) {
-            System.out.println("Cliente no encontrado");
+            System.out.println("bancoIgnacio.Cliente no encontrado");
             return;
         }
 
@@ -189,7 +191,7 @@ public class Menu {
         }
 
         if (cliente == null) {
-            System.out.println("Cliente no encontrado");
+            System.out.println("bancoIgnacio.Cliente no encontrado");
             return;
         }
 
