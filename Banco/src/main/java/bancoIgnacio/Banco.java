@@ -2,7 +2,6 @@ package bancoIgnacio;
 
 import java.util.ArrayList;
 import interfazComun.BancoConectable;
-import interfazComun.MediadorTransferencia;
 
 public class Banco implements BancoConectable{
     private ArrayList<Sucursal> sucursales = new ArrayList<>();

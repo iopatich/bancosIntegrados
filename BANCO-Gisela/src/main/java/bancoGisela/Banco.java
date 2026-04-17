@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 import interfazComun.BancoConectable;
-import interfazComun.MediadorTransferencia;
 
 public class Banco implements BancoConectable{
     static ArrayList<Sucursal> listSucursales = new ArrayList<>();

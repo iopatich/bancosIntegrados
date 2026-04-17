@@ -5,9 +5,9 @@
     <file url="file://$PROJECT_DIR$/BANCO-Gisela/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Banco/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/Banco/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Interfaz/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/Interfaz/src/main/resources" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/comun/src/main/java" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/comun/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/InterfazComun/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/InterfazComun/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/MainInterfaz/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/MainInterfaz/src/main/resources" charset="UTF-8" />
   </component>
 </project>

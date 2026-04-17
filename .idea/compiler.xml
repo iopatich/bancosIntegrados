@@ -8,8 +8,8 @@
         <outputRelativeToContentRoot value="true" />
         <module name="banco" />
         <module name="BANCO-Gisela" />
-        <module name="Interfaz" />
-        <module name="comun" />
+        <module name="InterfazComun" />
+        <module name="MainInterfaz" />
       </profile>
     </annotationProcessing>
   </component>
