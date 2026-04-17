@@ -146,10 +146,10 @@ public class Sucursal {
         }
     }
 
-    public void transferirOtroBanco(Admin admin, int idCuentaOrigen, int cuentaDestino, double monto, MediadorTransferencia mediador, Banco bancoOrigen) {
+    public boolean transferirOtroBanco(Admin admin, int idCuentaOrigen, int idCuentaDestino, double monto, MediadorTransferencia mediador, Banco bancoOrigen) {
         if (!admin.tienePermiso(Permiso.TRANSFERIR_PROPIO)) {
             System.out.println("Sin permiso");
-            return;
+            return false;
         }
 
         Cuenta origen = buscarCuenta(idCuentaOrigen);
@@ -157,14 +157,13 @@ public class Sucursal {
         if (origen != null && origen.getSaldo() >= monto) {
             origen.retirar(monto);
 
-            boolean ok = mediador.transferirEntreBancos(bancoOrigen, cuentaDestino, monto);
+            boolean conexion = mediador.transferirEntreBancos(bancoOrigen, idCuentaDestino, monto);
 
-            if (ok) {
-                System.out.println("Transferencia interbancaria realizada");
-            } else {
+            if (!conexion) {
                 origen.depositar(monto);
-                System.out.println("Cuenta destino no encontrada");
             }
+            return conexion;
         }
+        return false;
     }
 }
