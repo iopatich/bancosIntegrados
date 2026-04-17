@@ -255,15 +255,17 @@ public class Banco implements BancoConectable{
 
         listSucursales.get(0).listaCuentas.add(cuenta);
     }
-    public void mostrarSaldoCuenta(int idCuenta) {
+    public void mostrarBalanceCuentas() {
+        double total = 0;
+        System.out.println("---Banco Gisela---");
         for (Sucursal sucursal : listSucursales) {
+            System.out.println("Sucursal: " + sucursal.nombreSucursal);
             for (Cuenta cuenta : sucursal.listaCuentas) {
-                if (cuenta.numeroDeCuenta == idCuenta) {
-                    System.out.println("Banco Gisela cuenta " + idCuenta + ": $" + cuenta.saldo);
-                    return;
-                }
+                System.out.println("Cuenta: " + cuenta.numeroDeCuenta + " | Cliente: " + cuenta.nombre + " | Saldo: $" + cuenta.saldo);
+                total += cuenta.saldo;
             }
         }
+        System.out.println("Total Banco Gisela: $" + total);
     }
     public Cuenta buscarCuenta(int numeroCuenta) {
         for (Sucursal sucursal : listSucursales) {
