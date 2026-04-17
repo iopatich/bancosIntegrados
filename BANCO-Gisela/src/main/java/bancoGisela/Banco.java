@@ -2,7 +2,7 @@ package bancoGisela;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-
+import interfazComun.MediadorTransferencia;
 import interfazComun.BancoConectable;
 
 public class Banco implements BancoConectable{
@@ -265,5 +265,26 @@ public class Banco implements BancoConectable{
             }
         }
     }
-
+    public Cuenta buscarCuenta(int numeroCuenta) {
+        for (Sucursal sucursal : listSucursales) {
+            for (Cuenta cuenta : sucursal.listaCuentas) {
+                if (cuenta.numeroDeCuenta == numeroCuenta) {
+                    return cuenta;
+                }
+            }
+        }
+        return null;
+    }
+    public boolean transferirOtroBanco(int idCuentaOrigen, int idCuentaDestino, double monto, MediadorTransferencia mediador, BancoConectable bancoOrigen) {
+        Cuenta origen = buscarCuenta(idCuentaOrigen);
+        if (origen != null && origen.saldo >= monto) {
+            origen.saldo -= monto;
+            boolean conexion = mediador.transferirEntreBancos(bancoOrigen, idCuentaDestino, monto);
+            if (!conexion) {
+                origen.saldo += monto;
+            }
+            return conexion;
+        }
+        return false;
+    }
 }
