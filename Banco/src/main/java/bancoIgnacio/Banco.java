@@ -20,7 +20,6 @@ public class Banco implements BancoConectable{
 
         for (Sucursal sucursal : sucursales) {
             System.out.println("bancoIgnacio.Sucursal: " + sucursal.getNombre());
-
             for (Cliente cliente : sucursal.getClientes()) {
                 for (Cuenta cuenta : cliente.getCuentas()) {
                     System.out.println("bancoIgnacio.Cuenta: " + cuenta.getIdCuenta() + "  Saldo: $" + cuenta.getSaldo());
@@ -35,15 +34,16 @@ public class Banco implements BancoConectable{
     }
 
     public Object loginAdmin(String nombre, String contrasenia) {
-        if (adminBanco.getNombre().equals(nombre) &&
-                adminBanco.getContrasenia().equals(contrasenia)) {
-            return adminBanco;
+        if (adminBanco != null) {
+            if (adminBanco.getNombre().equals(nombre) &&
+                    adminBanco.getContrasenia().equals(contrasenia)) {
+                return adminBanco;
+            }
         }
-
         for (Sucursal sucursal : sucursales) {
             Admin admin = sucursal.getAdmin();
-
-            if (admin.getNombre().equals(nombre) && admin.getContrasenia().equals(contrasenia)) {
+            if (admin.getNombre().equals(nombre) &&
+                    admin.getContrasenia().equals(contrasenia)) {
                 return sucursal;
             }
         }
