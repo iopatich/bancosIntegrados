@@ -7,6 +7,34 @@ import interfazComun.BancoConectable;
 
 public class Banco implements BancoConectable{
     static ArrayList<Sucursal> listSucursales = new ArrayList<>();
+    private ArrayList<Cuenta> cuentas = new ArrayList<>();
+
+    @Override
+    public CuentaBase buscarCuenta(int idNumeroCuenta) {
+        for (Cuenta cuenta : cuentas) {
+            if (cuenta.numeroDeCuenta == idNumeroCuenta) {
+                return cuenta;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public boolean transferirDestino(int idNumeroCuenta, double monto) {
+        CuentaBase cuenta = buscarCuenta(idNumeroCuenta);
+
+        if (cuenta != null) {
+            cuenta.depositar(monto);
+            return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public String getNombreBanco() {
+        return "Banco Gisela";
+    }
 
     public static void main(String[] args) {
 

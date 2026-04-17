@@ -1,6 +1,6 @@
 package bancoGisela;
-
-public class Cuenta extends Usuario {
+ import interfazComun.CuentaBase;
+public class Cuenta extends Usuario  implements CuentaBase{
     //atributos de las cuentas
     public int numeroDeCuenta;
     public String tipoDeCuenta;
@@ -14,6 +14,19 @@ public class Cuenta extends Usuario {
         this.numeroDeCuenta = nro;
         this.edad = edad;
         this.saldo = 0.0;
+    }
+    @Override
+    public double getSaldo() {
+        return saldo;
+    }
 
+    @Override
+    public void depositar(double monto) {
+        saldo += monto;
+    }
+
+    @Override
+    public void retirar(double monto) {
+        saldo -= monto;
     }
 }
