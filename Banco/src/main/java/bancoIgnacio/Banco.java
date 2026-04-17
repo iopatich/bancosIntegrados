@@ -65,9 +65,4 @@ public class Banco implements BancoConectable{
         }
         return false;
     }
-
-    @Override
-    public String getNombreBanco() {
-        return "Banco Ignacio";
-    }
 }

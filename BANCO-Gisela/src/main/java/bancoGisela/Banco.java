@@ -245,11 +245,6 @@ public class Banco implements BancoConectable{
         return false;
     }
 
-    @Override
-    public String getNombreBanco() {
-        return "Banco Gisela";
-    }
-
     public void agregarCuentaPrueba(String nombre, int idCuenta, double saldoInicial) {
         if (listSucursales.isEmpty()) {
             listSucursales.add(new Sucursal("Sucursal Test", "Direccion", "admin", "123"));
