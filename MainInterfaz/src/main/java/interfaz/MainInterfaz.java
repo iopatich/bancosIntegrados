@@ -1,7 +1,7 @@
 package interfaz;
 
-import bancoIgnacio.Banco;
 import bancoIgnacio.Admin;
+import bancoIgnacio.Banco;
 import bancoIgnacio.Cliente;
 import bancoIgnacio.Cuenta;
 import bancoIgnacio.Sucursal;
@@ -9,10 +9,12 @@ import bancoIgnacio.TipoCuenta;
 import bancoIgnacio.Usuario;
 import interfazComun.MediadorTransferencia;
 
-import java.awt.desktop.SystemEventListener;
+import java.util.Scanner;
 
 public class MainInterfaz {
     public static void main(String[] args) {
+        Scanner teclado = new Scanner(System.in);
+
         Banco bancoIgnacio = new Banco();
         bancoGisela.Banco bancoGisela = new bancoGisela.Banco();
 
@@ -21,47 +23,99 @@ public class MainInterfaz {
         mediador.registrarBanco(bancoIgnacio);
         mediador.registrarBanco(bancoGisela);
 
+
         Admin adminBoedo = new Admin(1, "adminBoedo", "456");
         bancoIgnacio.crearSucursal("Boedo", adminBoedo);
 
-        Object resultadoLogin = bancoIgnacio.loginAdmin("adminBoedo", "456");
+        Object login = bancoIgnacio.loginAdmin("adminBoedo", "456");
 
-        Sucursal sucursal = null;
-        if (resultadoLogin instanceof Sucursal) {
-            sucursal = (Sucursal) resultadoLogin;
-        }
-
-        if (sucursal == null) {
-            System.out.println("No se pudo iniciar sesion");
-            return;
+        Sucursal sucursalIgnacio = null;
+        if (login instanceof Sucursal) {
+            sucursalIgnacio = (Sucursal) login;
         }
 
         Usuario usuarioIgnacio = new Usuario(101, "Ignacio", "123") {};
         Cliente clienteIgnacio = new Cliente(usuarioIgnacio);
 
-        sucursal.crearCliente(adminBoedo, clienteIgnacio);
-        sucursal.crearCuenta(adminBoedo, clienteIgnacio, 1001, TipoCuenta.AHORRO);
+        sucursalIgnacio.crearCliente(adminBoedo, clienteIgnacio);
+        sucursalIgnacio.crearCuenta(adminBoedo, clienteIgnacio, 1001, TipoCuenta.AHORRO);
+        sucursalIgnacio.crearCuenta(adminBoedo, clienteIgnacio, 1002, TipoCuenta.AHORRO);
+        sucursalIgnacio.crearCuenta(adminBoedo, clienteIgnacio, 1003, TipoCuenta.CORRIENTE);
 
-        Cuenta cuentaOrigen = sucursal.buscarCuenta(1001);
-        cuentaOrigen.depositar(10000);
+        Cuenta cuentaIgnacio = sucursalIgnacio.buscarCuenta(1001);
+        Cuenta cuentaIgnacio2 = sucursalIgnacio.buscarCuenta(1002);
+        Cuenta cuentaIgnacio3 = sucursalIgnacio.buscarCuenta(1003);
+
+        cuentaIgnacio.depositar(10000);
+        cuentaIgnacio2.depositar(5000);
+        cuentaIgnacio3.depositar(2500);
 
 
-        bancoGisela.agregarCuentaPrueba("Maria", 1002, 10000);
+        bancoGisela.agregarCuentaPrueba("Maria", 1004, 10000);
+        bancoGisela.agregarCuentaPrueba("Martin", 1005, 7500);
+        bancoGisela.agregarCuentaPrueba("Sofia", 1005, 22000);
 
-        System.out.println("---Saldos antes---");
-        System.out.println("Banco Ignacio cuenta 1001: $" + cuentaOrigen.getSaldo());
-        bancoGisela.mostrarSaldoCuenta(1002);
 
-        boolean conexion = sucursal.transferirOtroBanco(adminBoedo, 1001, 1002, 5000, mediador, bancoIgnacio);
+        int opcion;
 
-        if (conexion) {
-            System.out.println("Se ha realizado la transferencia con exito");
-        } else {
-            System.out.println("No se pudo transferir");
-        }
+        do {
+            System.out.println("Transferencia interbancaria");
+            System.out.println("1. Transferir desde Banco Ignacio");
+            System.out.println("2. Transferir desde Banco Gisela");
+            System.out.println("3. Ver balance de cuentas");
+            System.out.println("0. Salir");
+            System.out.print("Seleccione una opcion: ");
+            opcion = teclado.nextInt();
 
-        System.out.println("---Saldos despues---");
-        System.out.println("Banco Ignacio cuenta 1001: $" + cuentaOrigen.getSaldo());
-        bancoGisela.mostrarSaldoCuenta(1002);
+            switch (opcion) {
+                case 1:
+                    System.out.print("Cuenta origen Banco Ignacio: ");
+                    int origenIgnacio = teclado.nextInt();
+
+                    System.out.print("Cuenta destino: ");
+                    int destinoIgnacio = teclado.nextInt();
+
+                    System.out.print("Monto a transferir: ");
+                    double montoIgnacio = teclado.nextDouble();
+
+                    boolean conexion1 = sucursalIgnacio.transferirOtroBanco(adminBoedo, origenIgnacio, destinoIgnacio, montoIgnacio, mediador, bancoIgnacio
+                    );
+
+                    if (conexion1) {
+                        System.out.println("La transferencia se realizo con exito");
+                    } else {
+                        System.out.println("No se pudo realizar la transferencia");
+                    }
+                    break;
+                case 2:
+                    System.out.print("Cuenta origen Banco Gisela: ");
+                    int origenGisela = teclado.nextInt();
+
+                    System.out.print("Cuenta destino: ");
+                    int destinoGisela = teclado.nextInt();
+
+                    System.out.print("Monto a transferir: ");
+                    double montoGisela = teclado.nextDouble();
+
+                    boolean conexion2 = bancoGisela.transferirOtroBanco(origenGisela, destinoGisela, montoGisela, mediador, bancoGisela
+                    );
+                    if (conexion2) {
+                        System.out.println("La transferencia se realizo con exito");
+                    } else {
+                        System.out.println("No se pudo realizar la transferencia");
+                    }
+                    break;
+                case 3:
+                    System.out.println("Banco Ignacio");
+                    bancoIgnacio.mostrarBalanceCuentas();
+                    System.out.println();
+                    bancoGisela.mostrarBalanceCuentas();
+                case 0:
+                    System.out.println("Finalizado");
+                    break;
+                default:
+                    System.out.println("Opcion invalida");
+            }
+        } while (opcion != 0);
     }
 }

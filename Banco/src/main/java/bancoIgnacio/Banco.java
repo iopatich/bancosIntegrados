@@ -17,19 +17,16 @@ public class Banco implements BancoConectable{
 
     public void mostrarBalanceCuentas() {
         double total = 0;
-
         for (Sucursal sucursal : sucursales) {
-            System.out.println("bancoIgnacio.Sucursal: " + sucursal.getNombre());
+            System.out.println("Sucursal: " + sucursal.getNombre());
             for (Cliente cliente : sucursal.getClientes()) {
                 for (Cuenta cuenta : cliente.getCuentas()) {
-                    System.out.println("bancoIgnacio.Cuenta: " + cuenta.getIdCuenta() + "  Saldo: $" + cuenta.getSaldo());
+                    System.out.println("Cuenta: " + cuenta.getIdCuenta() + "  Saldo: $" + cuenta.getSaldo());
                     total += cuenta.getSaldo();
                 }
             }
-
             System.out.println();
         }
-
         System.out.println("Total en el banco: $" + total);
     }
 
