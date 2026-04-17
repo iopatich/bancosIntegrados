@@ -249,4 +249,26 @@ public class Banco implements BancoConectable{
     public String getNombreBanco() {
         return "Banco Gisela";
     }
+
+    public void agregarCuentaPrueba(String nombre, int idCuenta, double saldoInicial) {
+        if (listSucursales.isEmpty()) {
+            listSucursales.add(new Sucursal("Sucursal Test", "Direccion", "admin", "123"));
+        }
+
+        Cuenta cuenta = new Cuenta("user", "123", nombre, idCuenta, 25);
+        cuenta.saldo = saldoInicial;
+
+        listSucursales.get(0).listaCuentas.add(cuenta);
+    }
+    public void mostrarSaldoCuenta(int idCuenta) {
+        for (Sucursal sucursal : listSucursales) {
+            for (Cuenta cuenta : sucursal.listaCuentas) {
+                if (cuenta.numeroDeCuenta == idCuenta) {
+                    System.out.println("Banco Gisela cuenta " + idCuenta + ": $" + cuenta.saldo);
+                    return;
+                }
+            }
+        }
+    }
+
 }
