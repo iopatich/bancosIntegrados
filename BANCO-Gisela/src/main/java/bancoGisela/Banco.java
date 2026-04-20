@@ -251,18 +251,6 @@ public class Banco implements BancoConectable{
         }
         System.out.println("CAPITAL TOTAL DEL BANCO: $" + totalGlobal);
     }
-
-
-    public void agregarCuentaPrueba(String nombre, int idCuenta, double saldoInicial) {
-        if (listSucursales.isEmpty()) {
-            listSucursales.add(new Sucursal("Sucursal Test", "Direccion", "admin", "123"));
-        }
-
-        Cuenta cuenta = new Cuenta("user", "123", nombre, idCuenta, 25);
-        cuenta.saldo = saldoInicial;
-
-        listSucursales.get(0).listaCuentas.add(cuenta);
-    }
     public void mostrarBalanceCuentas() {
         double total = 0;
         System.out.println("---Banco Gisela---");
