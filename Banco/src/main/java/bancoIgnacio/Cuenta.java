@@ -1,9 +1,11 @@
 package bancoIgnacio;
 
+import interfazComun.CuentaBase;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Cuenta {
+public class Cuenta implements CuentaBase {
     private int idCuenta;
     private TipoCuenta tipoCuenta;
     private double saldo;

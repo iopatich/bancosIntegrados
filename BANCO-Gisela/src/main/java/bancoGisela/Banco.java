@@ -2,32 +2,34 @@ package bancoGisela;
 
 import java.util.ArrayList;
 import java.util.Scanner;
-import interfazComun.MediadorTransferencia;
+
+import interfazComun.CuentaBase;
 import interfazComun.BancoConectable;
+import interfazComun.MediadorTransferencia;
 
 public class Banco implements BancoConectable{
     static ArrayList<Sucursal> listSucursales = new ArrayList<>();
-    private ArrayList<Cuenta> cuentas = new ArrayList<>();
+    private MediadorTransferencia mediador;
 
     @Override
-    public CuentaBase buscarCuenta(int idNumeroCuenta) {
-        for (Cuenta cuenta : cuentas) {
-            if (cuenta.numeroDeCuenta == idNumeroCuenta) {
-                return cuenta;
+    public CuentaBase buscarCuenta(int numeroCuenta) {
+        for (Sucursal sucursal : listSucursales) {
+            for (Cuenta cuenta : sucursal.listaCuentas) {
+                if (cuenta.numeroDeCuenta == numeroCuenta) {
+                    return cuenta;
+                }
             }
         }
         return null;
     }
 
     @Override
-    public boolean transferirDestino(int idNumeroCuenta, double monto) {
-        CuentaBase cuenta = buscarCuenta(idNumeroCuenta);
-
+    public boolean transferirDestino(int numeroCuenta, double monto) {
+        CuentaBase cuenta = buscarCuenta(numeroCuenta);
         if (cuenta != null) {
             cuenta.depositar(monto);
             return true;
         }
-
         return false;
     }
 
@@ -36,8 +38,8 @@ public class Banco implements BancoConectable{
         return "Banco Gisela";
     }
 
-    public static void main(String[] args) {
-
+    public void iniciarSistema(MediadorTransferencia mediador) {
+        this.mediador = mediador;
         Scanner sc = new Scanner(System.in);
 
         // Credenciales Super Admin (Dueño del Banco)
@@ -51,8 +53,15 @@ public class Banco implements BancoConectable{
         while (true) {
             System.out.println("\n***--- SISTEMA BANCARIO ---***");
             System.out.println("******* INICIO DE SESIÓN*********");
+            System.out.println("Ingrese -1 para volver");
             System.out.print("Usuario: ");
+
             String userIn = sc.nextLine().trim();
+
+            if (userIn.equals("-1")) {
+                return;
+            }
+
             System.out.print("Contraseña: ");
             String passIn = sc.nextLine().trim();
 
@@ -165,7 +174,7 @@ public class Banco implements BancoConectable{
     }
 
     // seccion del menu del usuario y sus acciones
-    private static void menuUsuario(Scanner sc, Cuenta miCta, ArrayList<Sucursal> sucursales) {
+    private void menuUsuario(Scanner sc, Cuenta miCta, ArrayList<Sucursal> sucursales) {
         int op = 0;
         while (op != 3) {
             System.out.println("\n************ BIENVENIDO AL BANCO ******");
@@ -189,33 +198,23 @@ public class Banco implements BancoConectable{
 
             switch (op) {
                 case 1:
-                    System.out.println("\n--- REALIZAR UNA TRANSFERENCIA ---"); //TRASFIERE VALIDA SINO TENES SALDO O NO HAY CUENTA NO PODES
-                    System.out.print("Ingrese Nro de Cuenta Destino: ");
-                    int nroDestino = sc.nextInt(); sc.nextLine();
-                    System.out.print("Monto a transferir: $");
-                    double montoTransf = sc.nextDouble(); sc.nextLine();
+                    System.out.print("Ingrese Nro Cuenta Destino: ");
+                    int destino = sc.nextInt();
 
-                    if (montoTransf > miCta.saldo) {
-                        System.out.println("X Saldo insuficiente para transferir.");
-                        System.out.printf("-------------------------");
+                    System.out.print("Monto: ");
+                    double monto = sc.nextDouble();
+
+                    Cuenta cuentaLocal = (Cuenta) buscarCuenta(destino);
+
+                    if (cuentaLocal != null) {
+                        Trasferencias.ejecutar(miCta, cuentaLocal, monto);
                     } else {
-                        Cuenta cDestino = null;
-                        // Buscamos la cuenta en todas las sucursales
-                        for (Sucursal s : sucursales) {
-                            for (Cuenta c : s.listaCuentas) {
-                                if (c.numeroDeCuenta == nroDestino) {
-                                    cDestino = c;
-                                    break;
-                                }
-                            }
-                        }
+                        boolean conexion = mediador.transferir(this, miCta.numeroDeCuenta, destino, monto);
 
-                        if (cDestino != null) {
-                            // Usamos la clase de transferencias
-                            Trasferencias.ejecutar(miCta, cDestino, montoTransf);
+                        if (conexion) {
+                            System.out.println("Transferencia interbancaria realizada");
                         } else {
-                            System.out.println("  X La cuenta destino no existe. volve a intentar");
-
+                            System.out.println("No se pudo realizar");
                         }
                     }
                     break;
@@ -259,20 +258,6 @@ public class Banco implements BancoConectable{
     }
 
 
-    @Override
-    public boolean transferirDestino(int numeroCuenta, double monto) {
-        for (Sucursal sucursal : listSucursales) {
-            for (Cuenta cuenta : sucursal.listaCuentas) {
-                if (cuenta.numeroDeCuenta == numeroCuenta) {
-                    cuenta.saldo += monto;
-                    System.out.println("Transferencia recibida en banco Gisela");
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
     public void agregarCuentaPrueba(String nombre, int idCuenta, double saldoInicial) {
         if (listSucursales.isEmpty()) {
             listSucursales.add(new Sucursal("Sucursal Test", "Direccion", "admin", "123"));
@@ -294,27 +279,5 @@ public class Banco implements BancoConectable{
             }
         }
         System.out.println("Total Banco Gisela: $" + total);
-    }
-    public Cuenta buscarCuenta(int numeroCuenta) {
-        for (Sucursal sucursal : listSucursales) {
-            for (Cuenta cuenta : sucursal.listaCuentas) {
-                if (cuenta.numeroDeCuenta == numeroCuenta) {
-                    return cuenta;
-                }
-            }
-        }
-        return null;
-    }
-    public boolean transferirOtroBanco(int idCuentaOrigen, int idCuentaDestino, double monto, MediadorTransferencia mediador, BancoConectable bancoOrigen) {
-        Cuenta origen = buscarCuenta(idCuentaOrigen);
-        if (origen != null && origen.saldo >= monto) {
-            origen.saldo -= monto;
-            boolean conexion = mediador.transferirEntreBancos(bancoOrigen, idCuentaDestino, monto);
-            if (!conexion) {
-                origen.saldo += monto;
-            }
-            return conexion;
-        }
-        return false;
     }
 }

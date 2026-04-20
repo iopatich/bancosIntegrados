@@ -2,6 +2,7 @@ package bancoIgnacio;
 
 import java.util.ArrayList;
 import interfazComun.BancoConectable;
+import interfazComun.CuentaBase;
 
 public class Banco implements BancoConectable{
     private ArrayList<Sucursal> sucursales = new ArrayList<>();
@@ -61,5 +62,21 @@ public class Banco implements BancoConectable{
             }
         }
         return false;
+    }
+
+    @Override
+    public CuentaBase buscarCuenta(int numeroCuenta) {
+        for (Sucursal sucursal : sucursales) {
+            Cuenta cuenta = sucursal.buscarCuenta(numeroCuenta);
+            if (cuenta != null) {
+                return cuenta;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String getNombreBanco() {
+        return "Banco Ignacio";
     }
 }

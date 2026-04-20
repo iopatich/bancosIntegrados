@@ -145,25 +145,4 @@ public class Sucursal {
             System.out.println("Retiro realizado");
         }
     }
-
-    public boolean transferirOtroBanco(Admin admin, int idCuentaOrigen, int idCuentaDestino, double monto, MediadorTransferencia mediador, Banco bancoOrigen) {
-        if (!admin.tienePermiso(Permiso.TRANSFERIR_PROPIO)) {
-            System.out.println("Sin permiso");
-            return false;
-        }
-
-        Cuenta origen = buscarCuenta(idCuentaOrigen);
-
-        if (origen != null && origen.getSaldo() >= monto) {
-            origen.retirar(monto);
-
-            boolean conexion = mediador.transferirEntreBancos(bancoOrigen, idCuentaDestino, monto);
-
-            if (!conexion) {
-                origen.depositar(monto);
-            }
-            return conexion;
-        }
-        return false;
-    }
 }

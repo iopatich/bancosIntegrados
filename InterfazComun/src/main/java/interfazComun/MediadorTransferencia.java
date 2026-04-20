@@ -10,10 +10,19 @@ public class MediadorTransferencia {
         bancos.add(banco);
     }
 
-    public boolean transferirEntreBancos(BancoConectable bancoOrigen, int cuentaDestino, double monto) {
+    public boolean transferir(BancoConectable bancoOrigen, int cuentaOrigen, int cuentaDestino, double monto) {
+        CuentaBase origen = bancoOrigen.buscarCuenta(cuentaOrigen);
+        if (origen == null) {
+            return false;
+        }
+        if (origen.getSaldo() < monto) {
+            return false;
+        }
         for (BancoConectable banco : bancos) {
             if (banco != bancoOrigen) {
-                if (banco.transferirDestino(cuentaDestino, monto)) {
+                boolean conexion = banco.transferirDestino(cuentaDestino, monto);
+                if (conexion) {
+                    origen.retirar(monto);
                     return true;
                 }
             }

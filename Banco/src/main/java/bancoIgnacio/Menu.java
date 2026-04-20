@@ -1,10 +1,18 @@
 package bancoIgnacio;
 
+import interfazComun.MediadorTransferencia;
+
 import java.util.Scanner;
 
 public class Menu {
     private Banco banco = new Banco();
     private Scanner teclado = new Scanner(System.in);
+    private MediadorTransferencia mediador;
+
+    public Menu(Banco banco, MediadorTransferencia mediador) {
+        this.banco = banco;
+        this.mediador = mediador;
+    }
 
     public void iniciar() {
         Admin adminParquePatricios = new Admin(1, "adminParquePatricios", "123");
@@ -205,16 +213,29 @@ public class Menu {
     }
 
     private void transferir(Sucursal sucursal, Admin admin) {
-        System.out.print("id de la cuenta origen: ");
+        System.out.print("id cuenta origen: ");
         int origen = teclado.nextInt();
 
-        System.out.print("id de la cuenta destino: ");
+        System.out.print("id cuenta destino: ");
         int destino = teclado.nextInt();
 
         System.out.print("Monto: ");
         double monto = teclado.nextDouble();
 
-        sucursal.transferir(admin, origen, destino, monto);
+        Cuenta cuentaDestinoLocal = sucursal.buscarCuenta(destino);
+
+        if (cuentaDestinoLocal != null) {
+            sucursal.transferir(admin, origen, destino, monto);
+            return;
+        }
+
+        boolean conexion = mediador.transferir(banco, origen, destino, monto);
+
+        if (conexion) {
+            System.out.println("La transferencia se ha realizado con exito");
+        } else {
+            System.out.println("No se pudo realizar la transferencia");
+        }
     }
 
     private void verTransacciones(Sucursal sucursal, Admin admin) {
