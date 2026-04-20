@@ -33,11 +33,6 @@ public class Banco implements BancoConectable{
         return false;
     }
 
-    @Override
-    public String getNombreBanco() {
-        return "Banco Gisela";
-    }
-
     public void iniciarSistema(MediadorTransferencia mediador) {
         this.mediador = mediador;
         Scanner sc = new Scanner(System.in);

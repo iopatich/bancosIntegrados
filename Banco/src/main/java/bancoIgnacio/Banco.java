@@ -55,7 +55,6 @@ public class Banco implements BancoConectable{
                 for (Cuenta cuenta : cliente.getCuentas()) {
                     if (cuenta.getIdCuenta() == numeroCuenta) {
                         cuenta.depositar(monto);
-                        System.out.println("Transferencia recibida en banco Ignacio");
                         return true;
                     }
                 }
@@ -73,10 +72,5 @@ public class Banco implements BancoConectable{
             }
         }
         return null;
-    }
-
-    @Override
-    public String getNombreBanco() {
-        return "Banco Ignacio";
     }
 }
