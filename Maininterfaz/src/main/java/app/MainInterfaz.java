@@ -1,6 +1,5 @@
 package app;
 
-import bancoIgnacio.Admin;
 import bancoIgnacio.Banco;
 import bancoIgnacio.Menu;
 import interfazComun.MediadorTransferencia;
