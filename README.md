@@ -48,7 +48,8 @@ Su función es:
 - Buscar la cuenta destino en el otro banco
 - Depositar el dinero
 - Descontar el saldo de la cuenta origen
-De esta forma:
+
+De esta manera:
 - Los bancos no se conocen entre sí
 - Solo conocen al mediador
 - Se reduce el acoplamiento entre módulos
