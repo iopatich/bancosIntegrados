@@ -12,10 +12,7 @@ public class MediadorTransferencia {
 
     public boolean transferir(BancoConectable bancoOrigen, int cuentaOrigen, int cuentaDestino, double monto) {
         CuentaBase origen = bancoOrigen.buscarCuenta(cuentaOrigen);
-        if (origen == null) {
-            return false;
-        }
-        if (origen.getSaldo() < monto) {
+        if (origen == null || origen.getSaldo() < monto) {
             return false;
         }
         for (BancoConectable banco : bancos) {
